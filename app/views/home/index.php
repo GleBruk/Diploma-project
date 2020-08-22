@@ -1,6 +1,6 @@
 <?php
 if($_COOKIE['login'] == ''):
-    header('Location: http://diplom/user/reg');
+    header('Location: user/reg');
     ?>
 <?php else: ?>
     <?php require 'public/blocks/header.php'?>
