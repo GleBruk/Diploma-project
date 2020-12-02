@@ -8,15 +8,19 @@
         private $_db = null;
 
         public function __construct(){
+        // Подключаемся к БД
             $this->_db = DB::getInstance();
         }
 
         public function setData($long_link, $short_link){
+        // Устанавливаем данные
             $this->long_link = $long_link;
             $this->short_link = $short_link;
         }
 
         public function validLinks(){
+        // Проводим валидацию
+
             $check = $this->getOneLink();
 
             if($this->long_link == '') {
@@ -30,6 +34,8 @@
         }
 
         public function sendLinks(){
+        // Добавляем ссылки в БД
+
             $user = $this->getUser();
             $user_id = $user['id'];
 
@@ -40,6 +46,7 @@
         }
 
         public function getLinks(){
+        // Возвращаем данные ссылок из БД по id пользователя в виде двумерного массива
             $user = $this->getUser();
             $user_id = $user['id'];
 
@@ -48,17 +55,22 @@
         }
 
         public function getUser(){
+        // Возвращаем данные пользователя из БД по логину пользователя взятому из куки,
+        // в виде одномерного массива
             $login = $_COOKIE['login'];
             $result = $this->_db->query("SELECT * FROM `users` WHERE `login` = '$login'");
             return $result->fetch(PDO::FETCH_ASSOC);
         }
 
         public function getOneLink() {
-            $result = $this->_db->query("SELECT * FROM `links` WHERE `short_link` = '$this->short_link'");
+        // Берём данные ссылки и возвращаем в виде одномерного массива
+            $result = $this->_db->query("SELECT * FROM `links` WHERE 
+`short_link` = '$this->short_link'");
             return $result->fetch(PDO::FETCH_ASSOC);
         }
 
         public function deleteLink($link_id){
+        // Удаляем ссылку из БД по id взятому из аргумента
             $result = $this->_db->query("DELETE FROM `links` WHERE `id` = '$link_id'");
             return $result->fetch(PDO::FETCH_ASSOC);
         }

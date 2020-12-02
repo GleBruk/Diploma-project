@@ -1,5 +1,5 @@
 <?php
-
+// Подключаемся к БД
 
 class DB{
     private static $_db = null;

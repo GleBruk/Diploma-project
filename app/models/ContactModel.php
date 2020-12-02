@@ -1,4 +1,5 @@
 <?php
+// Для отправки писем используем библиотеку PHPMailer
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
     require 'vendor/autoload.php';
@@ -11,6 +12,7 @@
         private $mess;
 
         public function setData($name, $email, $age, $mess){
+        // Устанавливаем данные из контроллера
             $this->name = $name;
             $this->email = $email;
             $this->age = $age;
@@ -18,6 +20,7 @@
         }
 
         public function validForm(){
+        // Проводим валидацию
             if(strlen($this->name) < 3){
                 return "Имя слишком короткое";
             } else if (strlen($this->email) < 3)
@@ -31,29 +34,37 @@
         }
 
         public function sendMess(){
+            // Создаём новый объект
             $mail = new PHPMailer(true);
 
             try {
+                // Указываем данные для отправки письма
                 $mail->SMTPDebug = 0;
                 $mail->isSMTP();
             $mail->Host       = 'smtp.sendgrid.net';
                 $mail->SMTPAuth   = true;
-                $mail->Username   = 'aleksandr-ivanov';
+                $mail->Username   = 'username';
                 $mail->Password   = 'password';
                 $mail->SMTPSecure = 'tls';
                 $mail->Port       = 587;
 
+                // Устанавливаем email, имя и возраст отправителя
                 $mail->setFrom("$this->email", "$this->name" . ', ' . "$this->age" . ' лет');
 
+                // Устанавливаем email и имя получателя
                 $mail->addAddress('gleb-ruksha@rambler.ru', 'Gleb');
 
-                $mail->Subject = 'Сообщение с сайта'; // Тема сообщения
+                // Указываем тему сообщения и сообщение
+                $mail->Subject = 'Сообщение с сайта';
                 $mail->Body = $this->mess;
 
+                // Указываем кодировку
                 $mail->CharSet = 'UTF-8';
                 $mail->Encoding = 'base64';
 
+                // Отправляем сообщение
                 $mail->send();
+                // Если сообщение было отправлено, то выводим это. Иначе выводим ошибку
                 return 'Сообщение было отправлено';
             } catch (Exception $e) {
                 return "Сообщение не было отправлено. Ошибка: {$mail->ErrorInfo}";

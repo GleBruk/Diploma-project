@@ -1,6 +1,8 @@
 <?php
-if($_COOKIE['login'] == ''):
-    header('Location: user/reg');
+// Если пользователь не авторизован, то происходит переадресация на страницу регистрации. Иначе выводится
+// главная страница
+    if($_COOKIE['login'] == ''):
+        header('Location: user/reg');
     ?>
 <?php else: ?>
     <?php require 'public/blocks/header.php'?>
@@ -30,7 +32,7 @@ if($_COOKIE['login'] == ''):
             <button class="btn" id="send">Уменьшить</button>
         </form>
         <br>
-
+        <!-- Выводим ссылки через цикл -->
         <?php for($i = 0; $i < count($data['links']); $i++):?>
             <div>
                 <b>Длинная: </b><a href="<?=$data['links'][$i]['long_link']?>"><?=$data['links'][$i]['long_link']?></a><br>
